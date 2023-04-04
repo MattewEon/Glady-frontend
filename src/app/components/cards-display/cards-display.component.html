@@ -1,0 +1,16 @@
+<mat-card-content>
+	<ng-container *ngIf="result.equal">
+		<p>Votre montant est composé des cartes suivantes :</p>
+
+		<div class="cards-list">
+			<span class="card" *ngFor="let card of result.equal.cards">{{ card }} €</span>
+		</div>
+	</ng-container>
+
+	<ng-container *ngIf="!result.equal">
+		<p>Le montant de {{ amount }} € n'est pas disponible. Voici les valeurs les plus proches disponibles :</p>
+
+		<button mat-stroked-button color="primary" *ngIf="result.floor" (click)="setAndFindAmount(result.floor.value)">{{ result.floor.value }} €</button>
+		<button mat-stroked-button color="primary" *ngIf="result.ceil" (click)="setAndFindAmount(result.ceil.value)">{{ result.ceil.value }} €</button>
+	</ng-container>
+</mat-card-content>

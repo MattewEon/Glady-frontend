@@ -1,0 +1,10 @@
+<mat-card>
+	<mat-form-field>
+		<label>Montant désiré</label>
+		<input matInput type="number" placeholder="38" #input>
+	</mat-form-field>
+
+	<button mat-raised-button (click)="amount = +input.value">VALIDER</button>
+
+	<cards-display [(amount)]="amount"></cards-display>
+</mat-card>
