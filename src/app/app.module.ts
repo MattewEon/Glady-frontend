@@ -13,6 +13,7 @@ import {TokenInterceptor} from "./shared/token.interceptor";
 import {FormsModule} from "@angular/forms";
 import {MatListModule} from "@angular/material/list";
 import {MatCardModule} from "@angular/material/card";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 @NgModule({
 	declarations: [
@@ -29,7 +30,8 @@ import {MatCardModule} from "@angular/material/card";
 		HttpClientModule,
 		FormsModule,
 		MatListModule,
-		MatCardModule
+		MatCardModule,
+		MatSnackBarModule
 	],
 	providers: [
 		{provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},

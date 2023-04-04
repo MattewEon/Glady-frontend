@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {CalculatorService} from "../../services/calculator.service";
 import {CalculatorResult} from "../../model/calculator-result.model";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
 	selector: 'cards-display',
@@ -8,6 +9,9 @@ import {CalculatorResult} from "../../model/calculator-result.model";
 	styleUrls: ['cards-display.component.scss']
 })
 export class CardsDisplayComponent {
+
+	isMin: boolean = false;
+	isMax: boolean = false;
 
 	_amount: number = 20;
 	@Input() set amount(amount: number) {
@@ -23,7 +27,7 @@ export class CardsDisplayComponent {
 
 	result: CalculatorResult = new CalculatorResult();
 
-	constructor(private calculatorService: CalculatorService) {
+	constructor(private calculatorService: CalculatorService, private snackBar: MatSnackBar) {
 	}
 
 	/**
@@ -31,6 +35,9 @@ export class CardsDisplayComponent {
 	 * Emits the cards or an empty array if the amount is not available
 	 */
 	findCards() {
+		this.isMax = false;
+		this.isMin = false;
+
 		this.calculatorService.findCards(5, this.amount).subscribe(result => {
 			this.result = result
 			if (!this.result.equal) {
@@ -65,5 +72,39 @@ export class CardsDisplayComponent {
 	setAndFindAmount(amount: number) {
 		this.setAmount(amount);
 		this.findCards();
+	}
+
+	/**
+	 * Find the previous amount and set it as current
+	 */
+	onPreviousClick() {
+		this.calculatorService.findCards(5, this.amount - 1).subscribe(result => {
+			if (result.equal) {
+				this.result = result;
+				this.setAmount(result.equal.value);
+			} else if (result.floor) {
+				this.setAndFindAmount(result.floor.value);
+			} else {
+				this.snackBar.open("Montant minimum atteint", "OK");
+				this.isMin = true;
+			}
+		});
+	}
+
+	/**
+	 * Find the next amount and set it as current
+	 */
+	onNextClick() {
+		this.calculatorService.findCards(5, this.amount + 1).subscribe(result => {
+			if (result.equal) {
+				this.result = result;
+				this.setAmount(result.equal.value);
+			} else if (result.ceil) {
+				this.setAndFindAmount(result.ceil.value);
+			} else {
+				this.snackBar.open("Montant maximum atteint", "OK");
+				this.isMax = true;
+			}
+		});
 	}
 }

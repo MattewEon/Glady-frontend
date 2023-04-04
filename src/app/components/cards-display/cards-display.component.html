@@ -13,4 +13,11 @@
 		<button mat-stroked-button color="primary" *ngIf="result.floor" (click)="setAndFindAmount(result.floor.value)">{{ result.floor.value }} €</button>
 		<button mat-stroked-button color="primary" *ngIf="result.ceil" (click)="setAndFindAmount(result.ceil.value)">{{ result.ceil.value }} €</button>
 	</ng-container>
+
+	<div class="buttons">
+		<button mat-raised-button color="primary" *ngIf="result.floor" (click)="onPreviousClick()"
+				[disabled]="isMin">Montant précédent</button>
+		<button mat-raised-button color="primary" *ngIf="result.ceil" (click)="onNextClick()"
+				[disabled]="isMax">Montant suivant</button>
+	</div>
 </mat-card-content>
